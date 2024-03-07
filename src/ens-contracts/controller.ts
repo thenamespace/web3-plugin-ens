@@ -24,21 +24,23 @@ export class EnsController {
   private static _contract: Contract<typeof abi>;
   private static _controller: EnsController;
 
-  private constructor(chain: Chain) {
+  private constructor() {}
+
+  static create(chain: Chain) {
+    if (EnsController._controller) return;
+
+    if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
+
     const address =
       chain == Chain.Mainnet
         ? EnsController.CONTROLLER_ADDRESS_MAINNET
         : EnsController.CONTROLLER_ADDRESS_SEPOLIA;
 
     EnsController._contract = new Contract(abi, address);
+    EnsController._controller = new EnsController();
   }
 
-  static get(chain?: Chain): EnsController {
-    if (EnsController._controller) return EnsController._controller;
-
-    if (!chain) throw new Error('Chain is required.');
-
-    EnsController._controller = new EnsController(chain);
+  static get instance() {
     return EnsController._controller;
   }
 
@@ -46,12 +48,7 @@ export class EnsController {
     return EnsController._contract;
   }
 
-  // address(address: Address): EnsController {
-  //   EnsController.address = address;
-  //   return EnsController._controller;
-  // }
-
-  async makeCommitment(req: RegistrationRequest): Promise<string> {
+  async makeCommitment(req: RegistrationRequest): Promise<any> {
     const encodedSecret = this.toBytes32HexString(req.secret);
     const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const commitment = await this.contract.methods

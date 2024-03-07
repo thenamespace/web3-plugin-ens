@@ -14,19 +14,21 @@ export class Resolver {
   private static _contract: Contract<typeof abi>;
   private static _resolver: Resolver;
 
-  private constructor(chain: Chain) {
+  private constructor() {}
+
+  static create(chain: Chain) {
+    if (Resolver._resolver) return;
+
+    if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
+
     const address =
       chain == Chain.Mainnet ? Resolver.RESOLVER_ADDRESS_MAINNET : Resolver.RESOLVER_ADDRESS_SEPOLIA;
 
     Resolver._contract = new Contract(abi, address);
+    Resolver._resolver = new Resolver();
   }
 
-  static get(chain?: Chain): Resolver {
-    if (Resolver._resolver) return Resolver._resolver;
-
-    if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
-
-    Resolver._resolver = new Resolver(chain);
+  static get instance() {
     return Resolver._resolver;
   }
 
@@ -38,7 +40,7 @@ export class Resolver {
     name = name.toLowerCase();
     const nameNode = namehash(name);
 
-    const web3 = new Web3(Resolver._contract.provider);
+    const web3 = new Web3(this.contract.provider);
 
     // set up the encode function
     const setTextFn = abi.find((abi) => abi.name === 'setText') as AbiFunctionFragment;
@@ -62,7 +64,7 @@ export class Resolver {
     name = name.toLowerCase();
     const nameNode = namehash(name);
 
-    const web3 = new Web3(Resolver._contract.provider);
+    const web3 = new Web3(this.contract.provider);
 
     // set up the encode function
     const textFn = abi.find((abi) => abi.name === 'text') as AbiFunctionFragment;
