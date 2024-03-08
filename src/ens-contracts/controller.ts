@@ -64,18 +64,20 @@ export class EnsController {
       )
       .call();
 
-    const from = this.contract.wallet?.[0].address;
-    await this.contract.methods.commit(commitment).send({ from });
+    const web3 = new Web3(this.contract.provider);
+    const acct = await web3.eth.getAccounts();
 
-    return commitment as unknown as string;
+    return await this.contract.methods.commit(commitment).send({ from: acct[0] });
   }
 
   async register(req: RegistrationRequest) {
     const encodedSecret = this.toBytes32HexString(req.secret);
     const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const totalPrice = await this.estimatePrice(req.label, req.durationInSeconds);
-    const from = this.contract.wallet?.[0].address;
     const value = BigInt(totalPrice).toString();
+
+    const web3 = new Web3(this.contract.provider);
+    const acct = await web3.eth.getAccounts();
 
     return await this.contract.methods
       .register(
@@ -89,7 +91,7 @@ export class EnsController {
         req.fuses,
       )
       .send({
-        from,
+        from: acct[0],
         value,
       });
   }
@@ -102,7 +104,7 @@ export class EnsController {
   }
 
   private async encodeSetAddr(name: string, registrant: string) {
-    const web3 = new Web3(EnsController._contract.provider);
+    const web3 = new Web3(this.contract.provider);
     return web3.eth.abi.encodeFunctionCall(
       {
         name: 'setAddr',

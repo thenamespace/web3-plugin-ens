@@ -41,6 +41,7 @@ export class Resolver {
     const nameNode = namehash(name);
 
     const web3 = new Web3(this.contract.provider);
+    const acct = await web3.eth.getAccounts();
 
     // set up the encode function
     const setTextFn = abi.find((abi) => abi.name === 'setText') as AbiFunctionFragment;
@@ -54,9 +55,8 @@ export class Resolver {
     const deleted = recordsToRemove?.map((record) => encode(record, ''));
 
     // call multicall to store encoded records
-    const from = this.contract.wallet?.[0].address;
     return await this.contract.methods.multicall([...updated, ...deleted]).send({
-      from,
+      from: acct[0],
     });
   }
 
@@ -88,8 +88,9 @@ export class Resolver {
   }
 
   async setAddress(name: string, address: string) {
-    const from = this.contract.wallet?.[0].address;
-    return await this.contract.methods.setAddr(namehash(name.toLowerCase()), address).send({ from });
+    const web3 = new Web3(this.contract.provider);
+    const acct = await web3.eth.getAccounts();
+    return await this.contract.methods.setAddr(namehash(name.toLowerCase()), address).send({ from: acct[0] });
   }
 
   async getAddress(name: string): Promise<string> {
