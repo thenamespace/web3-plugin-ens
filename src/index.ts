@@ -1,4 +1,4 @@
-import { Web3Context, Web3EthPluginBase } from 'web3';
+import { TransactionReceipt, Web3Context, Web3EthPluginBase } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import { EnsController, RegistrationRequest } from './ens-contracts/controller';
 import { Resolver, TextRecord } from './ens-contracts/resolver';
@@ -18,15 +18,19 @@ export class EnsPlugin extends Web3EthPluginBase {
     Resolver.instance.contract.link(parentContext);
   }
 
-  public async makeCommitment(request: RegistrationRequest): Promise<string> {
+  public async makeCommitment(request: RegistrationRequest): Promise<TransactionReceipt> {
     return await EnsController.instance.makeCommitment(request);
   }
 
-  public async registerEnsDomain(request: RegistrationRequest) {
+  public async registerEnsDomain(request: RegistrationRequest): Promise<TransactionReceipt> {
     return await EnsController.instance.register(request);
   }
 
-  public async setTextRecords(name: string, recordsToUpdate: TextRecord[], recordsToRemove: string[]) {
+  public async setTextRecords(
+    name: string,
+    recordsToUpdate: TextRecord[],
+    recordsToRemove: string[],
+  ): Promise<TransactionReceipt> {
     return await Resolver.instance.setTextRecords(name, recordsToUpdate, recordsToRemove);
   }
 
@@ -34,7 +38,7 @@ export class EnsPlugin extends Web3EthPluginBase {
     return await Resolver.instance.getTextRecords(name, recordKeys);
   }
 
-  public async setAddress(name: string, address: string) {
+  public async setAddress(name: string, address: string): Promise<TransactionReceipt> {
     return await Resolver.instance.setAddress(name, address);
   }
 

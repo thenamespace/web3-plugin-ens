@@ -1,5 +1,5 @@
 import { namehash } from 'viem';
-import Web3, { AbiFunctionFragment, Address, Contract } from 'web3';
+import Web3, { AbiFunctionFragment, Address, Contract, TransactionReceipt } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import abi from '../abi/public-resolver.json';
 
@@ -36,7 +36,11 @@ export class Resolver {
     return Resolver._contract;
   }
 
-  async setTextRecords(name: string, recordsToUpdate: TextRecord[], recordsToRemove: string[]) {
+  async setTextRecords(
+    name: string,
+    recordsToUpdate: TextRecord[],
+    recordsToRemove: string[],
+  ): Promise<TransactionReceipt> {
     name = name.toLowerCase();
     const nameNode = namehash(name);
 
@@ -87,7 +91,7 @@ export class Resolver {
       }) as TextRecord[];
   }
 
-  async setAddress(name: string, address: string) {
+  async setAddress(name: string, address: string): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
     const acct = await web3.eth.getAccounts();
     return await this.contract.methods.setAddr(namehash(name.toLowerCase()), address).send({ from: acct[0] });

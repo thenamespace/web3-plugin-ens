@@ -1,4 +1,4 @@
-import Web3, { Address, Contract } from 'web3';
+import Web3, { Address, Contract, TransactionReceipt } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import abi from '../abi/reverse-registrar.json';
 
@@ -36,13 +36,18 @@ export class ReverseRegistrar {
     return await this.contract.methods.node(address).call();
   }
 
-  async setName(name: string) {
+  async setName(name: string): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
     const acct = await web3.eth.getAccounts();
     return await this.contract.methods.setName(name).send({ from: acct[0] });
   }
 
-  async setNameForAddr(address: Address, owner: Address, resolver: Address, name: string) {
+  async setNameForAddr(
+    address: Address,
+    owner: Address,
+    resolver: Address,
+    name: string,
+  ): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
     const acct = await web3.eth.getAccounts();
     return await this.contract.methods.setNameForAddr(address, owner, resolver, name).send({ from: acct[0] });

@@ -1,5 +1,5 @@
 import { namehash } from 'viem';
-import { Address, Contract, Web3 } from 'web3';
+import { Address, Contract, TransactionReceipt, Web3 } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import abi from '../abi/eth-controller.json';
 
@@ -48,7 +48,7 @@ export class EnsController {
     return EnsController._contract;
   }
 
-  async makeCommitment(req: RegistrationRequest): Promise<any> {
+  async makeCommitment(req: RegistrationRequest): Promise<TransactionReceipt> {
     const encodedSecret = this.toBytes32HexString(req.secret);
     const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const commitment = await this.contract.methods
@@ -70,7 +70,7 @@ export class EnsController {
     return await this.contract.methods.commit(commitment).send({ from: acct[0] });
   }
 
-  async register(req: RegistrationRequest) {
+  async register(req: RegistrationRequest): Promise<TransactionReceipt> {
     const encodedSecret = this.toBytes32HexString(req.secret);
     const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const totalPrice = await this.estimatePrice(req.label, req.durationInSeconds);
