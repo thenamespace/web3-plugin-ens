@@ -1,5 +1,5 @@
 import { namehash } from 'viem';
-import Web3, { AbiFunctionFragment, Address, Contract, TransactionReceipt } from 'web3';
+import Web3, { AbiFunctionFragment, Address, Contract, HexString, TransactionReceipt } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import abi from '../abi/public-resolver.json';
 
@@ -45,7 +45,9 @@ export class Resolver {
     const nameNode = namehash(name);
 
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
 
     // set up the encode function
     const setTextFn = abi.find((abi) => abi.name === 'setText') as AbiFunctionFragment;
@@ -60,7 +62,7 @@ export class Resolver {
 
     // call multicall to store encoded records
     return await this.contract.methods.multicall([...updated, ...deleted]).send({
-      from: acct[0],
+      from,
     });
   }
 
@@ -91,17 +93,20 @@ export class Resolver {
       }) as TextRecord[];
   }
 
-  async setAddress(name: string, address: string): Promise<TransactionReceipt> {
+  async setAddress(name: string, address: Address): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
-    return await this.contract.methods.setAddr(namehash(name.toLowerCase()), address).send({ from: acct[0] });
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
+
+    return await this.contract.methods.setAddr(namehash(name.toLowerCase()), address).send({ from });
   }
 
-  async getAddress(name: string): Promise<string> {
+  async getAddress(name: string): Promise<Address> {
     return await this.contract.methods.addr(namehash(name.toLowerCase())).call();
   }
 
-  async getName(node: string): Promise<string> {
+  async getName(node: HexString): Promise<string> {
     return await this.contract.methods.name(node).call();
   }
 }

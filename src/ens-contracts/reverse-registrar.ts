@@ -32,14 +32,17 @@ export class ReverseRegistrar {
     return ReverseRegistrar._contract;
   }
 
-  async node(address: Address): Promise<TransactionReceipt> {
+  async node(address: Address): Promise<string> {
     return await this.contract.methods.node(address).call();
   }
 
   async setName(name: string): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
-    return await this.contract.methods.setName(name).send({ from: acct[0] });
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
+
+    return await this.contract.methods.setName(name).send({ from });
   }
 
   async setNameForAddr(
@@ -49,7 +52,10 @@ export class ReverseRegistrar {
     name: string,
   ): Promise<TransactionReceipt> {
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
-    return await this.contract.methods.setNameForAddr(address, owner, resolver, name).send({ from: acct[0] });
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
+
+    return await this.contract.methods.setNameForAddr(address, owner, resolver, name).send({ from });
   }
 }

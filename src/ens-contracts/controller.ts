@@ -65,9 +65,11 @@ export class EnsController {
       .call();
 
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
 
-    return await this.contract.methods.commit(commitment).send({ from: acct[0] });
+    return await this.contract.methods.commit(commitment).send({ from });
   }
 
   async register(req: RegistrationRequest): Promise<TransactionReceipt> {
@@ -77,7 +79,9 @@ export class EnsController {
     const value = BigInt(totalPrice).toString();
 
     const web3 = new Web3(this.contract.provider);
-    const acct = await web3.eth.getAccounts();
+    const acct = this.contract.wallet?.[0]?.address;
+    const accts = await web3.eth.getAccounts();
+    const from = acct ?? accts[0];
 
     return await this.contract.methods
       .register(
@@ -91,7 +95,7 @@ export class EnsController {
         req.fuses,
       )
       .send({
-        from: acct[0],
+        from,
         value,
       });
   }
