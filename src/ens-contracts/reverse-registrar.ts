@@ -32,7 +32,7 @@ export class ReverseRegistrar {
     return ReverseRegistrar._contract;
   }
 
-  async node(address: Address): Promise<string> {
+  async node(address: Address): Promise<TransactionReceipt> {
     return await this.contract.methods.node(address).call();
   }
 
