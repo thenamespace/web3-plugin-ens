@@ -11,8 +11,6 @@ export class ReverseRegistrar {
   private constructor() {}
 
   static create(chain: Chain) {
-    if (ReverseRegistrar._resolver) return;
-
     if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
 
     const address =

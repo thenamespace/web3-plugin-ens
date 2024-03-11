@@ -27,8 +27,6 @@ export class EnsController {
   private constructor() {}
 
   static create(chain: Chain) {
-    if (EnsController._controller) return;
-
     if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
 
     const address =

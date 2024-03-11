@@ -17,8 +17,6 @@ export class Resolver {
   private constructor() {}
 
   static create(chain: Chain) {
-    if (Resolver._resolver) return;
-
     if (chain != Chain.Mainnet && chain != Chain.Sepolia) throw new Error('Invalid chain');
 
     const address =
