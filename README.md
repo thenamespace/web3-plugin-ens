@@ -128,7 +128,7 @@ You can also call `setNameForAddr` and provide these parameters:
 - `name` name for which the address will resolve (for example `yourname.eth)
 
 ```ts
-await setNameForAddr(address, owner, resolver, name);
+await web3.ens.setNameForAddr(address, owner, resolver, name);
 ```
 
 To resolve the name for the stored adddress call:
