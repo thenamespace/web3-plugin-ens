@@ -125,7 +125,7 @@ You can also call `setNameForAddr` and provide these parameters:
 - `address` address for which to set the record
 - `owner` address that owns the revers record
 - `resolver` address of the resolver which will resolve records
-- `name` name for which the address will resolve (for example `yourname.eth)
+- `name` name for which the address will resolve (for example `yourname.eth`)
 
 ```ts
 await web3.ens.setNameForAddr(address, owner, resolver, name);
