@@ -6,16 +6,16 @@ The plugin that extends the ENS functionality, by providing the latest ENS featu
 
 Register your plugin. There are two types of connections for which the plugin can be registered: private connection - connecting with your private key, public connection - connecting with a wallet such as MetaMask.
 
-### Private connection
-
-```ts
-const web3 = new Web3('_your_rpc_connection_url_');
-```
-
 ### Public connection
 
 ```ts
 const web3 = new Web3(window.ethereum);
+```
+
+### Private connection
+
+```ts
+const web3 = new Web3('_your_rpc_connection_url_');
 ```
 
 Next you will need to initialize the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Sepolia` and Sepolia: `const chain = Chain.Mainnet`.
@@ -24,7 +24,7 @@ Next you will need to initialize the plugin. The plugin supports Ethereum Mainne
 web3.registerPlugin(new EnsPlugin(chain));
 ```
 
-For **public connections** you will also need to link your account to the plugin.
+For **private connections** you will also need to link your account to the plugin.
 
 ```ts
 const account = web3.eth.accounts.privateKeyToAccount('_your_private_key');
