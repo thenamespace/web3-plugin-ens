@@ -57,6 +57,15 @@ export class EnsPlugin extends Web3EthPluginBase {
     return await ReverseRegistrar.instance.setName(name);
   }
 
+  public async setNameForAddr(
+    address: Address,
+    owner: Address,
+    resolver: Address,
+    name: string,
+  ): Promise<TransactionReceipt> {
+    return await ReverseRegistrar.instance.setNameForAddr(address, owner, resolver, name);
+  }
+
   public async node(address: Address): Promise<string> {
     return await ReverseRegistrar.instance.node(address);
   }
