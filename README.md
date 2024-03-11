@@ -57,7 +57,7 @@ Once you have `RegistrationRequest`, proceed with the registration:
 await web3.ens.commit(registrationRequest);
 ```
 
-2. To prevent front running and ensure that the registration makes it to another block ENS, requires at least one minute delay before proceeding to the next step.
+2. To prevent front running and ensure that the registration makes it to another block, ENS requires at least one minute delay before proceeding to the next step.
 3. Finally, after the one minute delay submit the registration request:
 
 ```ts
