@@ -21,8 +21,8 @@ export class EnsPlugin extends Web3EthPluginBase {
     ReverseRegistrar.instance.contract.link(parentContext);
   }
 
-  public async makeCommitment(request: RegistrationRequest): Promise<TransactionReceipt> {
-    return await EnsController.instance.makeCommitment(request);
+  public async commit(request: RegistrationRequest): Promise<TransactionReceipt> {
+    return await EnsController.instance.commit(request);
   }
 
   public async registerEnsDomain(request: RegistrationRequest): Promise<TransactionReceipt> {

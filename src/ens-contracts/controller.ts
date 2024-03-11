@@ -46,7 +46,7 @@ export class EnsController {
     return EnsController._contract;
   }
 
-  async makeCommitment(req: RegistrationRequest): Promise<TransactionReceipt> {
+  async commit(req: RegistrationRequest): Promise<TransactionReceipt> {
     const encodedSecret = this.toBytes32HexString(req.secret);
     const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const commitment = await this.contract.methods
