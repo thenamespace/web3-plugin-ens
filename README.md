@@ -1,4 +1,4 @@
-# Nemaspace ENS Web3 Plugin
+# Namespace ENS Web3 Plugin
 
 The plugin that extends the ENS functionality, by providing the latest ENS features such as domain registration and setting text records.
 
