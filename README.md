@@ -18,7 +18,7 @@ const web3 = new Web3(window.ethereum);
 const web3 = new Web3('_your_rpc_connection_url_');
 ```
 
-Next you will need to initialize the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Sepolia` and Sepolia: `const chain = Chain.Mainnet`.
+Next you will need to register the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Sepolia` and Sepolia: `const chain = Chain.Mainnet`.
 
 ```ts
 web3.registerPlugin(new EnsPlugin(chain));
