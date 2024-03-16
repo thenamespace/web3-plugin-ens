@@ -1,5 +1,5 @@
 {
-  "name": "@namespace/web3-plugin-ens",
+  "name": "@namespace-ens/web3-plugin-ens",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
