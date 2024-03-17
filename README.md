@@ -18,7 +18,7 @@ const web3 = new Web3(window.ethereum);
 const web3 = new Web3('_your_rpc_connection_url_');
 ```
 
-Next you will need to register the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Sepolia` and Sepolia: `const chain = Chain.Mainnet`.
+Next you will need to register the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Mainnet` and Sepolia: `const chain = Chain.Sepolia`.
 
 ```ts
 web3.registerPlugin(new EnsPlugin(chain));
@@ -37,11 +37,11 @@ In order to register an ENS domain, you will need to create a `RegistrationReque
 
 ```ts
 interface RegistrationRequest {
-  label: string; // label of the ENS domain, eg. web3js.eth, where web3js is the label
+  label: string; // label of the ENS domain (eg. web3js.eth, where web3js is the label)
   owner: string; // address of the wallet that will own the domain
-  durationInSeconds: number; // how long the domain will registered for
+  durationInSeconds: number; // how long the domain will registered for (set 31536000 for one year)
   secret: string; // random secret string
-  resolver: string; // address of the resolver for the domain getting registered
+  resolver: string; // address of the domain name resolver (use 0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63 for the official ENS PublicResolver)
   setAsPrimary: boolean; // is the domain primary for the address registering the domain (creates reverese record)
   fuses: number; // fuses that will be burned for the domain name
 }
