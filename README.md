@@ -1,10 +1,16 @@
 # Namespace ENS Web3 Plugin
 
-Web3 plugin that extends the ENS functionality, by providing the latest ENS features such as domain registration and setting text records.
+[Web3](https://web3js.org/) plugin that extends ENS functionality, by providing the latest ENS features such as domain registration and setting text records.
+
+# Installation
+
+```
+yarn add web3 @namespace-ens/web3-plugin-ens
+```
 
 # Setting up the plugin
 
-Register your plugin. There are two types of connections for which the plugin can be registered: private connection - connecting with your private key, public connection - connecting with a wallet such as MetaMask.
+Register your plugin. There are two types of connections for which the plugin can be registered: _private connection_ - connecting with your private key, _public connection_ - connecting with a wallet such as MetaMask.
 
 ### Public connection
 
@@ -27,7 +33,7 @@ web3.registerPlugin(new EnsPlugin(chain));
 For **private connections** you will also need to link your account to the plugin.
 
 ```ts
-const account = web3.eth.accounts.privateKeyToAccount('_your_private_key');
+const account = web3.eth.accounts.privateKeyToAccount('_your_private_key_');
 web3.eth.accounts.wallet.add(account);
 ```
 
@@ -68,8 +74,8 @@ await web3.ens.register(registrationRequest);
 
 To **set records** call `setTextRecords` with these parameters:
 
-- `name` ENS domain for which the records are set (for example `yourname.eth`)
-- `recordsToUpdate` array of `TextRecord`, where `TextRecord` is defined as:
+- `name`: ENS domain for which the records are set (for example `yourname.eth`)
+- `recordsToUpdate`: array of `TextRecord`, where `TextRecord` is defined as:
 
 ```ts
 interface TextRecord {
@@ -78,7 +84,7 @@ interface TextRecord {
 }
 ```
 
-- `recordsToRemove` array of record `key`s requiring removal
+- `recordsToRemove`: array of record `key`s requiring removal
 
 ```ts
 await web3.ens.setTextRecords(name, recordsToUpdate, recordsToRemove);
@@ -86,8 +92,8 @@ await web3.ens.setTextRecords(name, recordsToUpdate, recordsToRemove);
 
 To **get records** call `getRecords` with these parameters:
 
-- `name` ENS domain for which the records are retrieved (for example `yourname.eth`)
-- `recordKeys` array of record `key`s for which the retrieval is required
+- `name`: ENS domain for which the records are retrieved (for example `yourname.eth`)
+- `recordKeys`: array of record `key`s for which the retrieval is required
 
 ```ts
 await web3.ens.getTextRecords(name, recordKeys);
@@ -97,10 +103,10 @@ await web3.ens.getTextRecords(name, recordKeys);
 
 ### Address resolution
 
-To set the address to which the name will resolve call `setAddress` with these parameters:
+To set the address to which the name will resolve, call `setAddress` with these parameters:
 
-- `name` for which the address is set (for example `yourname.eth`)
-- `address` address of the wallet
+- `name`: for which the address is set (for example `yourname.eth`)
+- `address`: address of the wallet
 
 ```ts
 await web3.ens.setAddress(name, address);
@@ -114,7 +120,7 @@ await web3.ens.getAddress(name);
 
 ### Reverse name resolution
 
-For reverse name resolution call, which will set the caller's address to which `name` gets resolved:
+To set the name for your address call `setName`:
 
 ```ts
 await web3.ens.setName(name);
@@ -122,10 +128,10 @@ await web3.ens.setName(name);
 
 You can also call `setNameForAddr` and provide these parameters:
 
-- `address` address for which to set the record
-- `owner` address that owns the revers record
-- `resolver` address of the resolver which will resolve records
-- `name` name for which the address will resolve (for example `yourname.eth`)
+- `address`: address for which to set the record
+- `owner`: address that owns the reverse record
+- `resolver`: address of the resolver (use 0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63 for the official ENS PublicResolver)
+- `name`: name for which the address will resolve (for example `yourname.eth`)
 
 ```ts
 await web3.ens.setNameForAddr(address, owner, resolver, name);
