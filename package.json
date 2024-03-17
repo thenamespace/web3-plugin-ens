@@ -1,7 +1,7 @@
 {
   "name": "@namespace-ens/web3-plugin-ens",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.2",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx && prettier --write src/",
