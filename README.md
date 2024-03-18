@@ -1,6 +1,10 @@
 # Namespace ENS Web3 Plugin
 
-[Web3](https://web3js.org/) plugin that extends ENS functionality, by providing the latest ENS features such as domain registration and setting text records.
+[Web3](https://web3js.org/) plugin that extends ENS functionality, and provides the following features:
+
+- ENS name registration
+- text record management and resolution
+- address and name resolution
 
 # Installation
 
@@ -33,8 +37,7 @@ web3.registerPlugin(new EnsPlugin(chain));
 For **private connections** you will also need to link your account to the plugin.
 
 ```ts
-const account = web3.eth.accounts.privateKeyToAccount('_your_private_key_');
-web3.eth.accounts.wallet.add(account);
+web3.eth.accounts.wallet.add('_your_private_key_');
 ```
 
 # Domain registration
@@ -75,7 +78,7 @@ await web3.ens.register(registrationRequest);
 To **set records** call `setTextRecords` with these parameters:
 
 - `name`: ENS domain for which the records are set (for example `yourname.eth`)
-- `recordsToUpdate`: array of `TextRecord`, where `TextRecord` is defined as:
+- `recordsToUpdate`: array of `TextRecord`s, where `TextRecord` is defined as:
 
 ```ts
 interface TextRecord {
@@ -84,7 +87,7 @@ interface TextRecord {
 }
 ```
 
-- `recordsToRemove`: array of record `key`s requiring removal
+- `recordsToRemove`: array of record `key`s for which removal is required
 
 ```ts
 await web3.ens.setTextRecords(name, recordsToUpdate, recordsToRemove);
