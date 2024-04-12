@@ -56,10 +56,10 @@ export class Resolver {
     const updated = recordsToUpdate?.map((record) => encode(record.key, record.value));
 
     // encode records to remove
-    const deleted = recordsToRemove?.map((record) => encode(record, ''));
+    const removed = recordsToRemove?.map((record) => encode(record, ''));
 
     // call multicall to store encoded records
-    return await this.contract.methods.multicall([...updated, ...deleted]).send({
+    return await this.contract.methods.multicall([...updated, ...removed]).send({
       from,
     });
   }
