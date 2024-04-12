@@ -14,7 +14,10 @@ yarn add web3 @namespace-ens/web3-plugin-ens
 
 # Setting up the plugin
 
-Register your plugin. There are two types of connections for which the plugin can be registered: _private connection_ - connecting with your private key, _public connection_ - connecting with a wallet such as MetaMask.
+Register your plugin. There are two types of connections for which the plugin can be registered:
+
+- _public connection_ - connecting with a wallet such as MetaMask.
+- _private connection_ - connecting with your private key
 
 ### Public connection
 
@@ -135,6 +138,8 @@ You can also call `setNameForAddr` and provide these parameters:
 - `owner`: address that owns the reverse record
 - `resolver`: address of the resolver (use 0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63 for the official ENS PublicResolver)
 - `name`: name for which the address will resolve (for example `yourname.eth`)
+
+**The wallet calling `setNameForAddr` will need to be given the approval by the wallet at the above `address`** - this can be done by calling [setApprovalForAll](https://docs.ens.domains/registry/ens#other-functions)
 
 ```ts
 await web3.ens.setNameForAddr(address, owner, resolver, name);
