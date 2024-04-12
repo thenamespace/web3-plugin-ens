@@ -47,11 +47,12 @@ export class EnsController {
   }
 
   async commit(req: RegistrationRequest): Promise<TransactionReceipt> {
+    const label = req.label.toLocaleLowerCase();
+    const regData = await this.encodeSetAddr(`${label}.eth`, req.owner);
     const encodedSecret = this.toBytes32HexString(req.secret);
-    const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const commitment = await this.contract.methods
       .makeCommitment(
-        req.label.toLocaleLowerCase(),
+        label,
         req.owner,
         req.durationInSeconds,
         encodedSecret,
@@ -71,8 +72,9 @@ export class EnsController {
   }
 
   async register(req: RegistrationRequest): Promise<TransactionReceipt> {
+    const label = req.label.toLocaleLowerCase();
+    const regData = await this.encodeSetAddr(`${label}.eth`, req.owner);
     const encodedSecret = this.toBytes32HexString(req.secret);
-    const regData = await this.encodeSetAddr(`${req.label}.eth`, req.owner);
     const totalPrice = await this.estimatePrice(req.label, req.durationInSeconds);
     const value = BigInt(totalPrice).toString();
 
@@ -83,7 +85,7 @@ export class EnsController {
 
     return await this.contract.methods
       .register(
-        req.label.toLocaleLowerCase(),
+        label,
         req.owner,
         req.durationInSeconds,
         encodedSecret,
