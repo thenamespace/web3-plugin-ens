@@ -1,4 +1,4 @@
-import { namehash } from 'viem';
+import { namehash, toHex } from 'viem';
 import { Address, Contract, TransactionReceipt, Web3 } from 'web3';
 import { Chain } from 'web3-eth-accounts';
 import abi from '../abi/eth-controller.json';
@@ -49,7 +49,7 @@ export class EnsController {
   async commit(req: RegistrationRequest): Promise<TransactionReceipt> {
     const label = req.label.toLocaleLowerCase();
     const regData = await this.encodeSetAddr(`${label}.eth`, req.owner);
-    const encodedSecret = this.toBytes32HexString(req.secret);
+    const encodedSecret = toHex(req.secret, { size: 32 });
     const commitment = await this.contract.methods
       .makeCommitment(
         label,
@@ -74,7 +74,7 @@ export class EnsController {
   async register(req: RegistrationRequest): Promise<TransactionReceipt> {
     const label = req.label.toLocaleLowerCase();
     const regData = await this.encodeSetAddr(`${label}.eth`, req.owner);
-    const encodedSecret = this.toBytes32HexString(req.secret);
+    const encodedSecret = toHex(req.secret, { size: 32 });
     const totalPrice = await this.estimatePrice(req.label, req.durationInSeconds);
     const value = BigInt(totalPrice).toString();
 
@@ -126,22 +126,5 @@ export class EnsController {
       },
       [namehash(name), registrant],
     );
-  }
-
-  private toBytes32HexString(value: string) {
-    const utf8String = encodeURIComponent(value);
-    const stringBytes = [];
-    for (let i = 0; i < utf8String.length; i++) {
-      stringBytes.push(utf8String.charCodeAt(i));
-    }
-
-    // ensure the byte array is 32 bytes long
-    const padding = new Array(32 - stringBytes.length).fill(0);
-    const paddedBytes = [...stringBytes, ...padding];
-
-    // convert the byte array to a bytes32 type
-    const bytes32Value = '0x' + Buffer.from(paddedBytes).toString('hex');
-
-    return bytes32Value;
   }
 }
