@@ -1,6 +1,6 @@
 {
   "name": "@namespace-ens/web3-plugin-ens",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/index.js",
   "license": "MIT",
   "repository": {

@@ -12,7 +12,24 @@
 yarn add web3 @namespace-ens/web3-plugin-ens
 ```
 
-# Setting up the plugin
+# Basic usage
+
+```ts
+import { Web3 } from 'web3';
+import { Chain, EnsPlugin } from '@namespace-ens/web3-plugin-ens';
+
+const web3 = new Web3('_your_rpc_connection_url_');
+web3.registerPlugin(new EnsPlugin(Chain.Sepolia));
+web3.eth.accounts.wallet.add('_your_private_key_');
+
+// set and resolve an address for your ENS name
+await web3.ens.setAddress('_your_ens_name_', '_your_address_');
+await web3.ens.getAddress('_your_ens_name_');
+```
+
+# Step by step
+
+## Setting up the plugin
 
 Register your plugin. There are two types of connections for which the plugin can be registered:
 
@@ -31,19 +48,21 @@ const web3 = new Web3(window.ethereum);
 const web3 = new Web3('_your_rpc_connection_url_');
 ```
 
-Next you will need to register the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Mainnet` and Sepolia: `const chain = Chain.Sepolia`.
-
-```ts
-web3.registerPlugin(new EnsPlugin(chain));
-```
-
 For **private connections** you will also need to link your account to the plugin.
 
 ```ts
 web3.eth.accounts.wallet.add('_your_private_key_');
 ```
 
-# Domain registration
+### Plugin registration
+
+Next you will need to register the plugin. The plugin supports Ethereum Mainnet: `const chain = Chain.Mainnet` and Sepolia: `const chain = Chain.Sepolia`.
+
+```ts
+web3.registerPlugin(new EnsPlugin(chain));
+```
+
+## Domain registration
 
 In order to register an ENS domain, you will need to create a `RegistrationRequest`:
 
@@ -76,7 +95,7 @@ await web3.ens.commit(registrationRequest);
 await web3.ens.register(registrationRequest);
 ```
 
-# Setting and retrieving text records
+## Setting and retrieving text records
 
 To **set records** call `setTextRecords` with these parameters:
 
@@ -105,7 +124,7 @@ To **get records** call `getRecords` with these parameters:
 await web3.ens.getTextRecords(name, recordKeys);
 ```
 
-# Address and name resolution
+## Address and name resolution
 
 ### Address resolution
 
