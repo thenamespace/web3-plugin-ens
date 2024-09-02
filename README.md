@@ -92,7 +92,7 @@ await web3.ens.commit(registrationRequest);
 3. Finally, after the one minute delay submit the registration request:
 
 ```ts
-await web3.ens.register(registrationRequest);
+await web3.ens.registerEnsDomain(registrationRequest);
 ```
 
 ## Setting and retrieving text records
